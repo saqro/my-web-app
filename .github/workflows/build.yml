@@ -6,7 +6,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # هذا المتغير يجبر الإجراءات على استخدام Node 24 كما هو مطلوب في التحديثات
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - uses: actions/checkout@v4
@@ -26,8 +25,15 @@ jobs:
           cordova platform add android
           cordova build android --release -- --apk
           
+      - name: List Files
+        run: |
+          echo "--- جاري البحث عن ملفات الـ APK في المجلد ---"
+          find . -name "*.apk"
+          echo "--- انتهى البحث ---"
+          
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: my-app-apk
           path: '**/*.apk'
+
