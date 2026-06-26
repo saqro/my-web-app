@@ -12,15 +12,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Build with Cordova
-        uses: mathieudutour/cordova-build-android@v1
-        with:
-          # هذا الإجراء سيقوم بكل العمليات المعقدة تلقائياً
-          args: --release
+          
+      - name: Install Cordova and Android SDK Tools
+        run: |
+          npm install -g cordova
+          # تثبيت الحزم الأساسية لبناء الأندرويد
+          sudo apt-get update
+          sudo apt-get install -y default-jdk
+          
+      - name: Build APK
+        run: |
+          cordova create myApp com.example.app MyApp
+          cd myApp
+          rm -rf www/*
+          cp ../index.html www/
+          cordova platform add android
+          # البناء بصيغة APK مباشرة
+          cordova build android --release -- --apk
           
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: final-app
-          path: platforms/android/app/build/outputs/apk/release/*.apk
+          path: myApp/platforms/android/app/build/outputs/apk/release/*.apk
