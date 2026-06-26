@@ -1,4 +1,4 @@
-name: Build APK
+herename: Build APK
 on: [push]
 jobs:
   build:
@@ -14,12 +14,13 @@ jobs:
           npm install -g cordova
           cordova create myApp com.example.app MyApp
           cd myApp
-          # تثبيت أدوات الأندرويد الأساسية
+          rm -rf www/*
+          cp ../index.html www/
           cordova platform add android
-          # بناء التطبيق
-          cordova build android --release
+          # هذا الأمر سيجبر كوردوفا على بناء ملف APK
+          cordova build android --release --prod
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: my-final-apk
+          name: my-app-apk
           path: myApp/platforms/android/app/build/outputs/apk/release/*.apk
