@@ -18,10 +18,11 @@ jobs:
           cp ../index.html www/
           cordova platform add android
           cordova build android --release
-      - name: Find and Upload APK
-        run: |
-          # نبحث عن ملف الـ APK في أي مكان داخل المجلدات
+          
+          echo "--- تم البناء! سأقوم الآن بالبحث في كل المجلدات عن أي ملف ينتهي بـ apk ---"
           find . -name "*.apk"
+          echo "--- انتهى البحث ---"
+          
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
