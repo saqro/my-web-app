@@ -14,17 +14,12 @@ jobs:
           npm install -g cordova
           cordova create myApp com.example.app MyApp
           cd myApp
-          rm -rf www/*
-          cp ../index.html www/
+          # تثبيت أدوات الأندرويد الأساسية
           cordova platform add android
+          # بناء التطبيق
           cordova build android --release
-          
-          echo "--- تم البناء! سأقوم الآن بالبحث في كل المجلدات عن أي ملف ينتهي بـ apk ---"
-          find . -name "*.apk"
-          echo "--- انتهى البحث ---"
-          
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-package
-          path: '**/*.apk'
+          name: my-final-apk
+          path: myApp/platforms/android/app/build/outputs/apk/release/*.apk
